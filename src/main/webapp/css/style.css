@@ -1,0 +1,7 @@
+.meal > td{
+    color: lightgreen;
+}
+
+.meal.true > td{
+    color: red;
+}
