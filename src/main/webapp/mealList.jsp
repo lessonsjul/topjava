@@ -1,6 +1,8 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,12 +43,15 @@
             <th></th>
         </tr>
         <c:forEach items="${mealList}" var="meal">
-            <c:set var="colorText" value="green"/>
-            <c:if test="${meal.exceed}">
-                <c:set var="colorText" value="red"/>
-            </c:if>
-            <tr style="color: ${colorText};">
-                <td><javatime:format value='${meal.dateTime}' pattern="yyyy-MM-dd HH:mm"/></td>
+            <jsp:useBean id="meal" scope="page" type="ru.javawebinar.topjava.model.UserMealWithExceed" />
+            <tr style="color: ${meal.exceed ? 'red' : 'green'};">
+                <td>
+                    <%--<fmt:parseDate value="${meal.dateTime}" pattern="y-M-dd'T'H:m" var="parseDate"/>--%>
+                    <%--<fmt:formatDate value="${parseDate}" pattern="yyyy-MM-dd HH:mm" />--%>
+
+                    <%=TimeUtil.toString(meal.getDateTime())%>
+                    <%--<javatime:format value='${meal.dateTime}' pattern="yyyy-MM-dd HH:mm"/>--%>
+                </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
                 <td><a class="btn btn-primary" href="meals/edit?id=${meal.id}">Edit</a></td>
