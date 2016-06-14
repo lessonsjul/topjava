@@ -19,7 +19,7 @@ public class UserMeal extends Model{
         this.calories = calories;
     }
 
-    public UserMeal(int id, LocalDateTime dateTime, String description, int calories) {
+    public UserMeal(Integer id, LocalDateTime dateTime, String description, int calories) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
@@ -36,5 +36,15 @@ public class UserMeal extends Model{
 
     public int getCalories() {
         return calories;
+    }
+
+    @Override
+    public String toString() {
+        return "UserMeal{" +
+                "id=" + id +
+                "dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", calories=" + calories +
+                "} ";
     }
 }

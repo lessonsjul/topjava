@@ -29,10 +29,7 @@
 
 
 <div class="container">
-    <!-- Button trigger modal -->
-    <button class="btn btn-info btn-ms add" data-toggle="modal" data-target="#addMeal">
-        Добавить еду
-    </button>
+    <a class="btn btn-info btn-ms add" href="meals?action=create">Добавить еду</a>
 
     <table class="table table-striped">
         <tr style="border-bottom: 1px solid black">
@@ -54,56 +51,15 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a class="btn btn-primary" href="meals/edit?id=${meal.id}">Edit</a></td>
-                <td><a class="btn btn-danger" href="meals/delete?id=${meal.id}">Delete</a></td>
+                <td><a class="btn btn-primary" href="meals?action=edit&id=${meal.id}">Edit</a></td>
+                <%--<td><a class="btn btn-primary" href="meals/edit?id=${meal.id}">Edit</a></td>--%>
+                <%--<td><a class="btn btn-danger" href="meals/delete?id=${meal.id}">Delete</a></td>--%>
+                <td><a class="btn btn-danger" href="meals?action=delete&id=${meal.id}">Delete</a></td>
             </tr>
         </c:forEach>
 
     </table>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="addMeal" tabindex="-1" role="dialog" aria-labelledby="addUserMeal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Add meal</h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" role="form" method="post" action="${pageContext.servletContext.contextPath}/meals/add">
-                    <div class="form-group">
-                        <label for="userDate" class="col-sm-2 control-label">Date</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="dateTime" id="userDate" pattern="yyyy-MM-dd HH:mm"
-                                   placeholder="Date" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description" class="col-sm-2 control-label">Description</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="description" name="description"
-                                   placeholder="description" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="calories" class="col-sm-2 control-label">Calories</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="calories" name="calories"
-                                   placeholder="2000" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default">Add meal</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>

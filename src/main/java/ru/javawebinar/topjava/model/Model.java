@@ -5,9 +5,24 @@ package ru.javawebinar.topjava.model;
  */
 public class Model {
 
-    protected int id;
+    protected Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public boolean isNew() {
+        return this.id == null;
+    }
+
+    @Override
+    public String toString() {
+        return "Model{" +
+                "id=" + id +
+                '}';
     }
 }

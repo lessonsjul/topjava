@@ -14,49 +14,44 @@ import java.util.stream.Collectors;
 
 /**
  * Created by yulia on 12.06.16.
+ * This class realize storing user meal list with id
+ * Also we can add, update, read and remove userMeal using this class
+ * This class is made as singleton without lazy initialization
  */
-public class UserMealCashe {
+
+public class UserMealCashe implements UserMealStore{
 
     private static final UserMealCashe instance = new UserMealCashe();
+    private static final ConcurrentHashMap<Integer, UserMeal> userMeals = new ConcurrentHashMap<>();
+    private static AtomicInteger idx = new AtomicInteger(0);
 
     private UserMealCashe() {
-
     }
 
     public static UserMealCashe getInstance(){
-        return UserMealCashe.instance;
+        return instance;
     }
 
-    private static final ConcurrentHashMap<Integer, UserMeal> userMeals = new ConcurrentHashMap<>();
-
-    static{
-        List<UserMeal> mealList = Arrays.asList(
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500),
-                new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
-        );
-
-        for(UserMeal um: mealList){
-            int id = UserMealsUtil.idx.incrementAndGet();
-            userMeals.put(id,new UserMeal(id,um.getDateTime(),um.getDescription(),um.getCalories()));
-        }
+    static {
+        for(UserMeal um: UserMealsUtil.MEAL_LIST)
+            getInstance().save(um);
     }
 
+    @Override
     public Collection<UserMeal> values() { return this.userMeals.values(); }
 
+    @Override
     public UserMeal get(int id) { return this.userMeals.get(id); }
 
-    public void add(UserMeal um){
-        this.userMeals.put(um.getId(),um);
+    @Override
+    public UserMeal save(UserMeal um) {
+        if(um.isNew()){
+            um.setId(idx.incrementAndGet());
+        }
+        return userMeals.put(um.getId(),um);
     }
 
-    public void update(UserMeal um){
-        this.userMeals.replace(um.getId(), um);
-    }
-
+    @Override
     public void delete(int id){
         this.userMeals.remove(id);
     }

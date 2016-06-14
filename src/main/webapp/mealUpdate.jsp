@@ -25,8 +25,9 @@
 <h2><a href="${pageContext.servletContext.contextPath}/index.html">Home</a></h2>
 <h2>Update meal</h2>
 
-<form class="form-horizontal" role="form" method="post" action="${pageContext.servletContext.contextPath}/meals/edit">
-    <input type="hidden" name="id" value="${userMeal.id}">
+<jsp:useBean id="userMeal" scope="request" type="ru.javawebinar.topjava.model.UserMeal"/>
+<form class="form-horizontal" role="form" method="post" action="${pageContext.servletContext.contextPath}/meals">
+    <input type="hidden" name="id" value="<c:out value="${userMeal.id}"/>">
     <div class="form-group">
         <label for="userDate" class="col-sm-2 control-label">Date</label>
         <div class="col-sm-10">
@@ -50,7 +51,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Update</button>
+            <button type="submit" class="btn btn-default">Save</button>
         </div>
     </div>
 </form>

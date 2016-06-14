@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  */
 public class UserMealsUtil {
 
-    public static final AtomicInteger idx = new AtomicInteger();
     public static final List<UserMeal> MEAL_LIST = Arrays.asList(
             new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
             new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),

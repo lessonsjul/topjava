@@ -24,7 +24,7 @@ public class UserMealWithExceed extends Model{
         this.exceed = exceed;
     }
 
-    public UserMealWithExceed(int id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
+    public UserMealWithExceed(Integer id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
@@ -51,6 +51,7 @@ public class UserMealWithExceed extends Model{
     @Override
     public String toString() {
         return "UserMealWithExceed{" +
+                "id=" + id +
                 "dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
