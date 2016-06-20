@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.LoggedUser;
 import ru.javawebinar.topjava.model.UserMeal;
+import ru.javawebinar.topjava.model.to.UserMealWithExceed;
 import ru.javawebinar.topjava.repository.mock.InMemoryUserMealRepositoryImpl;
 import ru.javawebinar.topjava.service.UserMealService;
+import ru.javawebinar.topjava.util.UserMealsUtil;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -42,10 +44,10 @@ public class UserMealRestController {
         service.delete(id, userId);
     }
 
-    public List<UserMeal> getAll(){
+    public List<UserMealWithExceed> getAll(){
         int userId = LoggedUser.id();
         LOG.info("getAll meals for User {}", userId);
-        return service.getAll(userId);
+        return UserMealsUtil.getWithExceeded(service.getAll(userId),UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
     }
 
     public void deleteAll(){
