@@ -7,7 +7,9 @@ import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -47,8 +49,8 @@ public class UserMealServiceImpl implements UserMealService {
     }
 
     @Override
-    public List<UserMeal> getBeetwen(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return repository.getBeetwen(startDate, endDate, userId);
+    public List<UserMeal> getBeetwen(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int userId) {
+        return repository.getBeetwen(startDate, endDate, startTime, endTime, userId);
     }
 
     @Override

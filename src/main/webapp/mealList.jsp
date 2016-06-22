@@ -20,6 +20,17 @@
     <h2><a href="index.html">Home</a></h2>
     <h3>Meal list</h3>
     <a href="meals?action=create">Add Meal</a>
+
+    <form action="meals" method="get">
+        <input type="hidden" value="filter" name="action">
+        From Date: <input type="datetime-local"  value="${startDate}" name="startDate">
+        From Time: <input type="datetime-local"  value="${startTime}" name="startTime">
+
+        To Date: <input type="date"  value="${endDate}" name="endDate">
+        To Time: <input type="time"  value="${endTime}" name="endTime">
+
+        <input type="submit" value="Filter">
+    </form>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>

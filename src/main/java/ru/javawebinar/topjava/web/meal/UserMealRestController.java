@@ -11,7 +11,9 @@ import ru.javawebinar.topjava.repository.mock.InMemoryUserMealRepositoryImpl;
 import ru.javawebinar.topjava.service.UserMealService;
 import ru.javawebinar.topjava.util.UserMealsUtil;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class UserMealRestController {
     public List<UserMealWithExceed> getAll(){
         int userId = LoggedUser.id();
         LOG.info("getAll meals for User {}", userId);
-        return UserMealsUtil.getWithExceeded(service.getAll(userId),UserMealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return UserMealsUtil.getWithExceeded(service.getAll(userId),LoggedUser.get().getCaloriesPerDay());
     }
 
     public void deleteAll(){
@@ -56,10 +58,14 @@ public class UserMealRestController {
         service.deleteAll(userId);
     }
 
-    public List<UserMeal> getBeetwen(LocalDateTime startDate, LocalDateTime endDate){
+    public List<UserMealWithExceed> getBeetwen(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
         int userId = LoggedUser.id();
-        LOG.info("get meals beetwen {} {} for User {}", startDate, endDate, userId);
-        return service.getBeetwen(startDate, endDate, userId);
+        if(startDate == null) startDate = LocalDate.MIN;
+        if(endDate == null) endDate = LocalDate.MAX;
+        if(startTime == null) startTime = LocalTime.MIN;
+        if(endTime == null) endTime = LocalTime.MAX;
+        LOG.info("get meals beetwen {} {} to {} {} for User {}", startDate, startTime, endDate, endTime, userId);
+        return UserMealsUtil.getWithExceeded(service.getBeetwen(startDate, endDate, startTime, endTime, userId), LoggedUser.get().getCaloriesPerDay());
     }
 
     public void update(UserMeal userMeal){

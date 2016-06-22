@@ -6,8 +6,11 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.repository.UserMealRepository;
 import ru.javawebinar.topjava.util.TimeUtil;
+import ru.javawebinar.topjava.web.meal.UserMealRestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +32,15 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
     private static AtomicInteger counter = new AtomicInteger(0);
 
     {
-        save(new UserMeal(1,LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500), USER_ID);
-        save(new UserMeal(2,LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000), USER_ID);
-        save(new UserMeal(3,LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500), USER_ID);
-        save(new UserMeal(4,LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000), USER_ID);
-        save(new UserMeal(5,LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500), USER_ID);
-        save(new UserMeal(6,LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500), USER_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510), USER_ID);
 
-        save(new UserMeal(7,LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510), ADMIN_ID);
-        save(new UserMeal(8,LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 510), ADMIN_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.JUNE, 1, 14, 0), "Админ ланч", 510), ADMIN_ID);
+        save(new UserMeal(LocalDateTime.of(2015, Month.JUNE, 1, 21, 0), "Админ ужин", 510), ADMIN_ID);
     }
 
     @Override
@@ -45,13 +48,14 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
         Integer mealId = userMeal.getId();
 
         if(userMeal.isNew()){
-            userMeal.setId(counter.incrementAndGet());
+            mealId = counter.incrementAndGet();
+            userMeal.setId(mealId);
         }else if(get(mealId, userId) == null){
             return null;
         }
 
         Map<Integer, UserMeal> meals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
-        meals.put(mealId, userMeal);
+        meals.put(mealId,userMeal);
         return userMeal;
     }
 
@@ -73,9 +77,10 @@ public class InMemoryUserMealRepositoryImpl implements UserMealRepository {
     }
 
     @Override
-    public List<UserMeal> getBeetwen(LocalDateTime startDate, LocalDateTime endDate, int idUser) {
+    public List<UserMeal> getBeetwen(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int idUser) {
         return repository.get(idUser).values().stream()
-                .filter(um -> TimeUtil.isBetween(um.getDateTime(),startDate,endDate))
+                .filter(um -> TimeUtil.isBetween(um.getDateTime().toLocalDate(),startDate,endDate) &&
+                    TimeUtil.isBetween(um.getDateTime().toLocalTime(), startTime, endTime))
                 .sorted(UserMeal.COMPARE_BY_DATE)
                 .collect(Collectors.toList());
     }

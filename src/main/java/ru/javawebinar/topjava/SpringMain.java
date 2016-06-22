@@ -4,9 +4,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.model.to.UserMealWithExceed;
 import ru.javawebinar.topjava.web.meal.UserMealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +31,8 @@ public class SpringMain {
             System.out.println();
             UserMealRestController userMealController = appCtx.getBean(UserMealRestController.class);
 
+            List<UserMealWithExceed> ddd = userMealController.getBeetwen(LocalDate.of(2015, Month.MAY, 30), LocalDate.of(2015, Month.MAY, 31), LocalTime.of(10, 0), LocalTime.of(12,0));
+            ddd.stream().forEach(System.out::println);
         }
     }
 }

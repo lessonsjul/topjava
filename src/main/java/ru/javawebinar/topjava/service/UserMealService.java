@@ -4,7 +4,9 @@ import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ public interface UserMealService {
 
     void update(UserMeal UserMeal, int userId);
 
-    List<UserMeal> getBeetwen(LocalDateTime startDate, LocalDateTime endDate, int userId);
+    List<UserMeal> getBeetwen(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime, int userId);
 
     void deleteAll(int userId) throws NotFoundException;
 }

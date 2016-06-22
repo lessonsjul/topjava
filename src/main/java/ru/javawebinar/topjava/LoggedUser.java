@@ -11,9 +11,10 @@ import java.util.Set;
  * 06.03.2015.
  */
 public class LoggedUser {
-    protected int id = 0;
+    protected int id = 1;
     protected Set<Role> roles = Collections.singleton(Role.ROLE_USER);
     protected boolean enabled = true;
+    protected int caloriesPerDay = UserMealsUtil.DEFAULT_CALORIES_PER_DAY;
 
     private static LoggedUser LOGGED_USER = new LoggedUser();
 
@@ -31,5 +32,9 @@ public class LoggedUser {
 
     public boolean isEnabled(){
         return enabled;
+    }
+
+    public int getCaloriesPerDay() {
+        return caloriesPerDay;
     }
 }
