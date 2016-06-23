@@ -25,7 +25,6 @@ import static ru.javawebinar.topjava.MealTestData.*;
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
-
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UserMealServiceTest {
@@ -43,15 +42,10 @@ public class UserMealServiceTest {
 
     @Test
     public void testSave() throws Exception {
-        UserMeal um = new UserMeal(LocalDateTime.now(),"new Meal",2000);
+        UserMeal um = new UserMeal(LocalDateTime.of(2015,5,31,14,0),"new Meal",2000);
         UserMeal created = service.save(um, USER_ID);
         um.setId(created.getId());
-        MATCHER.assertCollectionEquals(Arrays.asList(userMeal1,um,userMeal2,userMeal3),service.getAll(USER_ID));
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void tryDeleteForeignMeal(){
-        service.delete(MEAL_ID_1, ADMIN_ID);
+        MATCHER.assertCollectionEquals(Arrays.asList(um,userMeal3,userMeal2,userMeal1),service.getAll(USER_ID));
     }
 
     @Test
@@ -60,10 +54,20 @@ public class UserMealServiceTest {
         MATCHER.assertCollectionEquals(Arrays.asList(adminMeal1), service.getAll(ADMIN_ID));
     }
 
+    @Test(expected = NotFoundException.class)
+    public void tryDeleteForeignMeal(){
+        service.delete(MEAL_ID_1, ADMIN_ID);
+    }
+
     @Test
     public void testGet() throws Exception {
         UserMeal um = service.get(MEAL_ID_1,USER_ID);
         MATCHER.assertEquals(userMeal1,um);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void tryGetForeignMeal() throws Exception {
+        service.get(MEAL_ID_4, USER_ID);
     }
 
     @Test
@@ -85,11 +89,16 @@ public class UserMealServiceTest {
 
     @Test
     public void testUpdate() throws Exception {
-        UserMeal umUpdate = userMeal3;
+        UserMeal umUpdate = new UserMeal(userMeal3);
         umUpdate.setCalories(300);
         umUpdate.setDescription("updated");
         service.update(umUpdate, USER_ID);
         MATCHER.assertEquals(umUpdate, service.get(umUpdate.getId(), USER_ID));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void tryUpdateForeignMeal() throws Exception {
+        service.update(userMeal3, ADMIN_ID);
     }
 
 }
